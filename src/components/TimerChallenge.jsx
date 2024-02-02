@@ -1,13 +1,17 @@
 import { useState, useRef } from "react";
+import ResultModal from "./ResultModal";
 
 export default function TimeChallenge({ title, targetTime }) {
   const timer = useRef();
+  const dialog = useRef();
   const [timeStarted, setTimeStarted] = useState(false);
   const [timeExpired, setTimeExpired] = useState(false);
 
   function handleStart() {
     timer.current = setTimeout(() => {
       setTimeExpired(true);
+      //The .showModal() method opens the modal dialog
+      dialog.current.showModal();
     }, targetTime * 1000);
 
     setTimeStarted(true);
@@ -19,9 +23,11 @@ export default function TimeChallenge({ title, targetTime }) {
 
   return (
     <>
+      {timeExpired && (
+        <ResultModal ref={dialog} targetTime={targetTime} result="lost" />
+      )}
       <section className="challenge">
         <h2>{title}</h2>
-        {timeExpired && <p>You lost!</p>}
         <p className="challenge-time">
           {targetTime} second{targetTime > 1 ? "s" : ""}
         </p>
