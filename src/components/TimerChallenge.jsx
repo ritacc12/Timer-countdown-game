@@ -4,14 +4,15 @@ import ResultModal from "./ResultModal";
 export default function TimeChallenge({ title, targetTime }) {
   const timer = useRef();
   const dialog = useRef();
+
   const [timeStarted, setTimeStarted] = useState(false);
   const [timeExpired, setTimeExpired] = useState(false);
 
   function handleStart() {
     timer.current = setTimeout(() => {
       setTimeExpired(true);
-      //The .showModal() method opens the modal dialog
-      dialog.current.showModal();
+      //calling ResultModal open method
+      dialog.current.open();
     }, targetTime * 1000);
 
     setTimeStarted(true);
