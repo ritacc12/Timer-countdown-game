@@ -5,21 +5,29 @@ export default function TimeChallenge({ title, targetTime }) {
   const timer = useRef();
   const dialog = useRef();
 
-  const [timeStarted, setTimeStarted] = useState(false);
-  const [timeExpired, setTimeExpired] = useState(false);
+  const [timeRemaining, setRemaining] = useState(targetTime * 1000);
+
+  const timeIsActive = timeRemaining > 0 && timeRemaining < targetTime * 1000;
+
+  // if expired , cause this function to run again
+  if (timeRemaining <= 0) {
+    clearInterval(timer.current);
+    setRemaining(targetTime * 1000);
+    dialog.current.open(); //time expired and the game lost
+  }
 
   function handleStart() {
-    timer.current = setTimeout(() => {
-      setTimeExpired(true);
-      //calling ResultModal open method
-      dialog.current.open();
-    }, targetTime * 1000);
-
-    setTimeStarted(true);
+    //deduct the 10 milliseconds from the current time remaining
+    timer.current = setInterval(() => {
+      setRemaining((prevTimeRemaining) => prevTimeRemaining - 10);
+    }, 10);
   }
 
   function handleStop() {
-    clearTimeout(timer.current);
+    // user manually stopped the timer and won
+    dialog.current.open();
+    // 呼應setInterval
+    clearInterval(timer.current);
   }
 
   return (
@@ -33,12 +41,12 @@ export default function TimeChallenge({ title, targetTime }) {
           {targetTime} second{targetTime > 1 ? "s" : ""}
         </p>
         <p>
-          <button onClick={timeStarted ? handleStop : handleStart}>
-            {timeStarted ? "Stop" : "Start"} Challenge
+          <button onClick={timeIsActive ? handleStop : handleStart}>
+            {timeIsActive ? "Stop" : "Start"} Challenge
           </button>
         </p>
-        <p className={timeStarted ? "active" : undefined}>
-          {timeStarted ? "Time is running" : "Timer inactive"}
+        <p className={timeIsActive ? "active" : undefined}>
+          {timeIsActive ? "Time is running" : "Timer inactive"}
         </p>
       </section>
     </>
