@@ -12,8 +12,13 @@ export default function TimeChallenge({ title, targetTime }) {
   // if expired , cause this function to run again
   if (timeRemaining <= 0) {
     clearInterval(timer.current);
+    //time expired and the game lost
+    dialog.current.open();
+  }
+
+  // restart the timer
+  function handleReset() {
     setRemaining(targetTime * 1000);
-    dialog.current.open(); //time expired and the game lost
   }
 
   function handleStart() {
@@ -32,9 +37,13 @@ export default function TimeChallenge({ title, targetTime }) {
 
   return (
     <>
-      {timeExpired && (
-        <ResultModal ref={dialog} targetTime={targetTime} result="lost" />
-      )}
+      <ResultModal
+        ref={dialog}
+        targetTime={targetTime}
+        remainingTime={timeRemaining}
+        onReset={handleReset}
+      />
+
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
