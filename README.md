@@ -3,7 +3,17 @@
 This is the react practice project, players make guesses based on the timer target time.
 Timer shows game status based on results
 
+### Timer Game
+
 ![screenshot-Timer Game](https://github.com/ritacc12/Timer-countdown-game/blob/main/public/Timer.png)
+
+### Result
+
+- Success
+  ![Success](https://github.com/ritacc12/Timer-countdown-game/blob/main/public/Success.png)
+
+- Lost
+  ![Lost](https://github.com/ritacc12/Timer-countdown-game/blob/main/public/Lost.png)
 
 ## Feature
 
